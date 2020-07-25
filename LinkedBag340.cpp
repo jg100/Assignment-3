@@ -10,28 +10,26 @@
 #include "LinkedBag.h"
 #include <cstdlib>
 #include <ctime>
+//#include <iostream>
 
 template<typename ItemType>
 bool LinkedBag<ItemType>::removeSecondNode340() {
-    if (LinkedBag<ItemType>::getCurrentSize() > 1) { //not empty
+    Node<ItemType> *secondNode = headPtr->getNext();
+    if(!isEmpty()) {
+        secondNode->setItem(headPtr->getItem());
+        Node<ItemType> *nodeToDelete = headPtr;
+        headPtr = headPtr->getNext();
 
-        //Node to delete
-        Node<ItemType>* temp = LinkedBag<ItemType>::headPtr->getNext();
+        delete nodeToDelete;
+        nodeToDelete = nullptr;
 
-        headPtr = headPtr->getNext()->getNext();
-        temp->setNext(nullptr); //Removing what the second points to
-
-        //Deletes node data
-        delete temp;
-        temp = nullptr; //Deallocates ptr
         itemCount--;
         return true;
-    }
-    else { // empty
-
+    } else {
         return false;
     }
 }
+
 
 
 template<typename ItemType>
