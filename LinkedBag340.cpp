@@ -1,12 +1,11 @@
+//
+//  LinkedBag340.cpp
+//  ASMT3
+//
+//  Created by Ernesto Diaz on 7/24/20.
+//  Copyright © 2020 Ernesto Diaz. All rights reserved.
+//
 
-//	LinkedBag340.cpp
-//	Created by: CSC340
-
-/*
-===>					<===
-===>  PLEASE ADD CODE	<===
-===>			ok		<===
-*/
 #include "LinkedBag.h"
 
 #include <cstdlib>
@@ -54,7 +53,7 @@ bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
     else {
         return false;
     }
-
+    return 0;
 }
 
 template<typename ItemType>
@@ -83,8 +82,6 @@ int LinkedBag<ItemType>::getCurrentSize340Recursive() const {
 
 /* Questions
  Where should we define static? Will another call to static
-
-
  */
 
 
@@ -108,6 +105,7 @@ int LinkedBag<ItemType>::getCurrentSize340RecursiveHelper(Node<ItemType>* testNo
 
     getCurrentSize340RecursiveHelper(testNode->getNext());
     counter++;
+    return 0;
 } //End helper function
 
 
@@ -133,7 +131,7 @@ int LinkedBag<ItemType>::getCurrentSize340RecursiveNoHelper() const {
     traversalPointer = traversalPointer->getNext();
     countNoHelper++;
     getCurrentSize340RecursiveNoHelper();
-
+    return 0;
 }
 
 
@@ -170,6 +168,7 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveHelper(Node<ItemType>* curren
         getFrequencyOf340RecursiveHelper(currentPtr->getNext(), searchedValue);
 
     }
+    return 0;
 }
 
 
@@ -193,7 +192,7 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& sear
         freqCount++;
         getFrequencyOf340Recursive(searchedValue);
     }
-
+    return 0;
 }
 
 
@@ -213,36 +212,4 @@ ItemType LinkedBag<ItemType>::removeRandom340() {
     remove(currPtr->getItem());
     return currPtr->getItem();
 }
-
-
-//DEFINED METHODS
-/*
-public:
-LinkedBag();
-LinkedBag(const LinkedBag<ItemType>&);
-virtual ~LinkedBag();
-int getCurrentSize() const;
-bool isEmpty() const;
-bool add(const ItemType&);
-bool remove(const ItemType&);
-void clear();
-bool contains(const ItemType&) const;
-int getFrequencyOf(const ItemType&) const;
-std::vector<ItemType> toVector() const;
-*/
-
-
-//TO IMPLEMENT
-/*
- bool removeSecondNode340();
- bool addEnd340(const ItemType&);
- int getCurrentSize340Iterative() const;
- int getCurrentSize340Recursive() const;
- int getCurrentSize340RecursiveNoHelper() const;
- int getFrequencyOf340Recursive(const ItemType&) const;
- int getFrequencyOf340RecursiveNoHelper(const ItemType&) const;
- ItemType removeRandom340();
- */
-
-
 
