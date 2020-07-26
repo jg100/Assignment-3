@@ -8,30 +8,19 @@
 ===>			ok		<===
 */
 #include "LinkedBag.h"
+
 #include <cstdlib>
 #include <ctime>
 
+#include <iostream>
+using namespace std;
 template<typename ItemType>
 bool LinkedBag<ItemType>::removeSecondNode340() {
-    if (LinkedBag<ItemType>::getCurrentSize() > 1) { //not empty
 
-        //Node to delete
-        Node<ItemType>* temp = LinkedBag<ItemType>::headPtr->getNext();
-
-        headPtr = headPtr->getNext()->getNext();
-        temp->setNext(nullptr); //Removing what the second points to
-
-        //Deletes node data
-        delete temp;
-        temp = nullptr; //Deallocates ptr
-        itemCount--;
-        return true;
-    }
-    else { // empty
-
-        return false;
-    }
+    Node<ItemType> *nodeToDelete = headPtr->getNext();
+    return remove(nodeToDelete->getItem());
 }
+
 
 
 template<typename ItemType>
@@ -41,7 +30,7 @@ bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
     Node<ItemType>* newNodePtr = new Node<ItemType>;
     newNodePtr->setItem(newEntry);
 
-    if (!isEmpty()) { //acounts for a bag of size 0
+    if (!isEmpty()) { //accounts for a bag of size 0
         Node<ItemType>* traversePtr = headPtr;
         newNodePtr->setNext(nullptr);
 
@@ -51,15 +40,14 @@ bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
 
         traversePtr->setNext(newNodePtr);
         itemCount++;
-
-
         return true;
 
-    }
+    } //end if statement
+
     else if (isEmpty()) {
 
         //Wold adding this work.
-        this->add(newEntry);
+        add(newEntry);
 
         //return true;
     }
@@ -71,7 +59,7 @@ bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
 
 template<typename ItemType>
 int LinkedBag<ItemType>::getCurrentSize340Iterative() const {
-    int count = 0;
+    int count = 1;
 
     if (!isEmpty()) {
         Node<ItemType>* traversePtr = headPtr;
@@ -255,3 +243,6 @@ std::vector<ItemType> toVector() const;
  int getFrequencyOf340RecursiveNoHelper(const ItemType&) const;
  ItemType removeRandom340();
  */
+
+
+
