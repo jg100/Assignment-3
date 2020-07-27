@@ -93,30 +93,33 @@ int LinkedBag<ItemType>::getCurrentSize340Recursive() const {
  //Helper file
 template<typename ItemType>
 int LinkedBag<ItemType>::getCurrentSize340RecursiveHelper(Node<ItemType>* testNode) const {
-    static int counter = 0;
+    int countHelper = 0;
 
-    if (isEmpty()) {
+    //Not going to work, bc every call reset the traversalPtr
+
+    //cool beans.
+    static Node<ItemType>* traversalPointer = testNode;
+
+
+    if (traversalPointer == nullptr) {
+        traversalPointer = testNode;
         return 0;
     }
 
-    if (testNode->getNext() == nullptr) {
-        //End of the node chain.
-        int size = counter;
-        counter = 0;
-        return size;
+    else {
+        traversalPointer = traversalPointer->getNext();
+        countHelper++;
+        return (countHelper + getCurrentSize340RecursiveHelper(traversalPointer));
     }
-
-    getCurrentSize340RecursiveHelper(testNode->getNext());
-    counter++;
 } //End helper function
 
 
 
-
+//test 6
 //No helper function
 template <typename ItemType>
 int LinkedBag<ItemType>::getCurrentSize340RecursiveNoHelper() const {
-    static int countNoHelper = 0;
+    int countNoHelper = 0;
 
     //Not going to work, bc every call reset the traversalPtr
 
@@ -124,15 +127,16 @@ int LinkedBag<ItemType>::getCurrentSize340RecursiveNoHelper() const {
     static Node<ItemType>* traversalPointer = headPtr;
 
 
-    if (traversalPointer->getNext() == nullptr) {
-        int size = countNoHelper;
-        countNoHelper = 0;
-        return size;
+    if (traversalPointer == nullptr) {
+        traversalPointer = headPtr;
+        return 0;
     }
 
-    traversalPointer = traversalPointer->getNext();
-    countNoHelper++;
-    getCurrentSize340RecursiveNoHelper();
+    else {
+        traversalPointer = traversalPointer->getNext();
+        countNoHelper++;
+        return (countNoHelper + getCurrentSize340RecursiveNoHelper());
+    }
 
 }
 
@@ -151,48 +155,48 @@ int LinkedBag<ItemType>::getFrequencyOf340Recursive(const ItemType& searchedValu
 template <typename ItemType>
 int LinkedBag<ItemType>::getFrequencyOf340RecursiveHelper(Node<ItemType>* currentPtr, const ItemType& searchedValue) const {
 
-    static int freq = 0;
+    //cool beans.
+    static Node<ItemType>* traversalPointer = headPtr;
+    int freqCount = 0;
 
-    if (isEmpty()) {
+    if (traversalPointer == nullptr) {
+        traversalPointer = headPtr;
         return 0;
     }
 
-    if (currentPtr->getNext() == nullptr) {
-        //End of the node chain.
-
-        int returnedFreq = freq;
-        freq = 0;
-        return returnedFreq;
+    if (traversalPointer->getItem() == searchedValue) {
+        traversalPointer = traversalPointer->getNext();
+        freqCount++;
+        return (freqCount + getFrequencyOf340RecursiveHelper(traversalPointer, searchedValue));
     }
 
-    if (currentPtr->getItem() == searchedValue) {
-        freq++;
-        getFrequencyOf340RecursiveHelper(currentPtr->getNext(), searchedValue);
-
-    }
+    traversalPointer = traversalPointer->getNext();
+    getFrequencyOf340RecursiveHelper(traversalPointer, searchedValue);
 }
 
 
 
-
+//test 8
 template <typename ItemType>
 int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& searchedValue) const {
-    static int freqCount = 0;
 
     //cool beans.
     static Node<ItemType>* traversalPointer = headPtr;
+    int freqCount = 0;
 
-
-    if (traversalPointer->getNext() == nullptr) {
-        int searched = freqCount;
-        freqCount = 0;
-        return searched;
+    if (traversalPointer == nullptr) {
+        traversalPointer = headPtr;
+        return 0;
     }
 
     if (traversalPointer->getItem() == searchedValue) {
+        traversalPointer = traversalPointer->getNext();
         freqCount++;
-        getFrequencyOf340Recursive(searchedValue);
+        return (freqCount + getFrequencyOf340RecursiveNoHelper(searchedValue));
     }
+
+    traversalPointer = traversalPointer->getNext();
+    getFrequencyOf340RecursiveNoHelper(searchedValue);
 
 }
 
