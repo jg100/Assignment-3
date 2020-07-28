@@ -55,6 +55,8 @@ bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
         return false;
     }
 
+    return false;
+    
 }
 
 template<typename ItemType>
@@ -171,7 +173,8 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveHelper(Node<ItemType>* curren
     }
 
     traversalPointer = traversalPointer->getNext();
-    getFrequencyOf340RecursiveHelper(traversalPointer, searchedValue);
+    return freqCount + getFrequencyOf340RecursiveHelper(traversalPointer, searchedValue);
+    
 }
 
 
@@ -196,8 +199,9 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& sear
     }
 
     traversalPointer = traversalPointer->getNext();
-    getFrequencyOf340RecursiveNoHelper(searchedValue);
+    return freqCount + getFrequencyOf340RecursiveNoHelper(searchedValue);
 
+   
 }
 
 
