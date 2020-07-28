@@ -1,4 +1,3 @@
-
 //	LinkedBag340.cpp
 //	Created by: CSC340
 
@@ -17,7 +16,7 @@ using namespace std;
 template<typename ItemType>
 bool LinkedBag<ItemType>::removeSecondNode340() {
 
-    Node<ItemType> *nodeToDelete = headPtr->getNext();
+    Node<ItemType>* nodeToDelete = headPtr->getNext();
     return remove(nodeToDelete->getItem());
 }
 
@@ -56,7 +55,7 @@ bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
     }
 
     return false;
-    
+
 }
 
 template<typename ItemType>
@@ -85,8 +84,6 @@ int LinkedBag<ItemType>::getCurrentSize340Recursive() const {
 
 /* Questions
  Where should we define static? Will another call to static
-
-
  */
 
 
@@ -174,7 +171,7 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveHelper(Node<ItemType>* curren
 
     traversalPointer = traversalPointer->getNext();
     return freqCount + getFrequencyOf340RecursiveHelper(traversalPointer, searchedValue);
-    
+
 }
 
 
@@ -201,7 +198,7 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& sear
     traversalPointer = traversalPointer->getNext();
     return freqCount + getFrequencyOf340RecursiveNoHelper(searchedValue);
 
-   
+
 }
 
 
@@ -218,8 +215,9 @@ ItemType LinkedBag<ItemType>::removeRandom340() {
     for (int i = 1; i <= nodeToBeDeleted; i++) {
         currPtr = currPtr->getNext();
     }
+    ItemType returnedValue = currPtr->getItem();
     remove(currPtr->getItem());
-    return currPtr->getItem();
+    return returnedValue;
 }
 
 
@@ -251,6 +249,3 @@ std::vector<ItemType> toVector() const;
  int getFrequencyOf340RecursiveNoHelper(const ItemType&) const;
  ItemType removeRandom340();
  */
-
-
-
