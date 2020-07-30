@@ -1,255 +1,171 @@
-
-//	LinkedBag340.cpp
-//	Created by: CSC340
-
-/*
-===>					<===
-===>  PLEASE ADD CODE	<===
-===>			ok		<===
-*/
-#include "LinkedBag.h"
-#include <cstdlib>
+// Start of Program
+#include "LinkedBag.h" // Pre-Defined Methods
+#include <iostream>
 #include <ctime>
-//#include <iostream>
+#include <cstdlib>
 
-template<typename ItemType>
-bool LinkedBag<ItemType>::removeSecondNode340() {
-    Node<ItemType> *secondNode = headPtr->getNext();
-    if(!isEmpty()) {
-        secondNode->setItem(headPtr->getItem());
-        Node<ItemType> *nodeToDelete = headPtr;
-        headPtr = headPtr->getNext();
+using namespace std;
 
-        delete nodeToDelete;
-        nodeToDelete = nullptr;
-
-        itemCount--;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
-
+// Adding New Node Method
 template<typename ItemType>
 bool LinkedBag<ItemType>::addEnd340(const ItemType& newEntry) {
+    Node<ItemType>* newPtr = new Node<ItemType>;
+    newPtr->setItem(newEntry);
 
+    // Checks if the bag is empty or not
+    if (!isEmpty()) {
+        Node<ItemType>* tPtr = headPtr;
+        newPtr->setNext(nullptr);
 
-    Node<ItemType>* newNodePtr = new Node<ItemType>;
-    newNodePtr->setItem(newEntry);
-
-    if (!isEmpty()) { //acounts for a bag of size 0
-        Node<ItemType>* traversePtr = headPtr;
-        newNodePtr->setNext(nullptr);
-
-        while (traversePtr->getNext() != nullptr) {
-            traversePtr = traversePtr->getNext(); //Last node
+        // Keep finding until it satisfies the condition
+        while (tPtr->getNext() != nullptr) {
+            tPtr = tPtr->getNext();
         }
 
-        traversePtr->setNext(newNodePtr);
+        tPtr->setNext(newPtr);
         itemCount++;
-
-
         return true;
 
+    } else {
+        add(newEntry);
     }
-    else if (isEmpty()) {
-
-        //Wold adding this work.
-        this->add(newEntry);
-
-        //return true;
-    }
-    else {
-        return false;
-    }
-
+    return false;
 }
 
+// Removing Random Node Method
+template <typename ItemType>
+ItemType LinkedBag<ItemType>::removeRandom340() {
+    // Method for finding deletedNode
+    int deletedNode;
+    srand((unsigned)time(NULL));
+    deletedNode = rand() % getCurrentSize();
+
+    Node<ItemType>* cPtr = headPtr;
+
+    for (int i = 1; i <= deletedNode; i++) {
+        cPtr = cPtr->getNext();
+    }
+    ItemType value = cPtr->getItem();
+    remove(cPtr->getItem());
+    return value;
+}
+
+// Removing 2nd Node Method
 template<typename ItemType>
-int LinkedBag<ItemType>::getCurrentSize340Iterative() const {
-    int count = 0;
-
-    if (!isEmpty()) {
-        Node<ItemType>* traversePtr = headPtr;
-        while (traversePtr->getNext() != nullptr) {
-            traversePtr = traversePtr->getNext(); //Last node
-            count++;
-        }
-    }
-
-    return count;
+bool LinkedBag<ItemType>::removeSecondNode340() {
+    Node<ItemType>* nodeToRemove = headPtr->getNext();
+    return remove(nodeToRemove->getItem());
 }
 
-
+// Size, Recursive Method
+// Simple Implementation
 template<typename ItemType>
 int LinkedBag<ItemType>::getCurrentSize340Recursive() const {
 
+    // Calling Helper Method
     return getCurrentSize340RecursiveHelper(headPtr);
+} 
 
-
-} //Heloer function defined bellow
-
-/* Questions
- Where should we define static? Will another call to static
-
-
- */
-
-
- //Isnt this a private function? How is this file able to acess method?
- //Is it because this file is meant to define the class methods in the .h file.
- //Helper file
+// Size, Recursive with Helper Method
 template<typename ItemType>
-int LinkedBag<ItemType>::getCurrentSize340RecursiveHelper(Node<ItemType>* testNode) const {
-    static int counter = 0;
+int LinkedBag<ItemType>::getCurrentSize340RecursiveHelper(Node<ItemType>* node) const {
+    int count = 0;
+    static Node<ItemType>* tPtr = node;
 
-    if (isEmpty()) {
+    // Checks if tPtr is equal to a null pointer
+    if (tPtr == nullptr) {
+        tPtr = node;
         return 0;
+    } else {
+       tPtr = tPtr->getNext();
+       count++;
+       // Calling itself
+       return (count + getCurrentSize340RecursiveHelper(tPtr));
     }
+}
 
-    if (testNode->getNext() == nullptr) {
-        //End of the node chain.
-        int size = counter;
-        counter = 0;
-        return size;
-    }
-
-    getCurrentSize340RecursiveHelper(testNode->getNext());
-    counter++;
-} //End helper function
-
-
-
-
-//No helper function
+// Size, Recursive no Helper Method
 template <typename ItemType>
 int LinkedBag<ItemType>::getCurrentSize340RecursiveNoHelper() const {
-    static int countNoHelper = 0;
+    int count = 0;
+    static Node<ItemType>* tPtr = headPtr;
 
-    //Not going to work, bc every call reset the traversalPtr
-
-    //cool beans.
-    static Node<ItemType>* traversalPointer = headPtr;
-
-
-    if (traversalPointer->getNext() == nullptr) {
-        int size = countNoHelper;
-        countNoHelper = 0;
-        return size;
+    // Checks if tPtr is equal to a null pointer
+    if (tPtr == nullptr) {
+        tPtr = headPtr;
+        return 0;
+    } else {
+        tPtr = tPtr->getNext();
+        count++;
+        // Calling itself
+        return (count + getCurrentSize340RecursiveNoHelper());
     }
-
-    traversalPointer = traversalPointer->getNext();
-    countNoHelper++;
-    getCurrentSize340RecursiveNoHelper();
-
 }
 
+// Size, Iterative Method
+template<typename ItemType>
+int LinkedBag<ItemType>::getCurrentSize340Iterative() const {
+    int counter = 1;
 
+    // Checks if the bag is empty or not
+    if (!isEmpty()) {
+        Node<ItemType>* tPtr = headPtr;
 
-
-
-template <typename ItemType>
-int LinkedBag<ItemType>::getFrequencyOf340Recursive(const ItemType& searchedValue) const {
-
-    return getFrequencyOf340RecursiveHelper(headPtr, searchedValue);
+        // Keep finding until it satisfies the condition
+        while (tPtr->getNext() != nullptr) {
+            tPtr = tPtr->getNext();
+            counter++;
+        }
+    }
+    return counter;
 }
 
-
-//Private
+// Frequency, Recursive Method
 template <typename ItemType>
-int LinkedBag<ItemType>::getFrequencyOf340RecursiveHelper(Node<ItemType>* currentPtr, const ItemType& searchedValue) const {
+int LinkedBag<ItemType>::getFrequencyOf340Recursive(const ItemType& value) const {
 
-    static int freq = 0;
+    // Calling Helper Method
+    return getFrequencyOf340RecursiveHelper(headPtr, value);
+}
 
-    if (isEmpty()) {
+// Frequency, Helper Method
+template <typename ItemType>
+int LinkedBag<ItemType>::getFrequencyOf340RecursiveHelper(Node<ItemType>* cPtr, const ItemType& value) const {
+    static Node<ItemType>* tPtr = headPtr;
+    int count = 0;
+
+    if (tPtr == nullptr) {
+        tPtr = headPtr;
         return 0;
     }
 
-    if (currentPtr->getNext() == nullptr) {
-        //End of the node chain.
-
-        int returnedFreq = freq;
-        freq = 0;
-        return returnedFreq;
+    if (tPtr->getItem() == value) {
+        tPtr = tPtr->getNext();
+        count++;
+        return count + getFrequencyOf340RecursiveHelper(tPtr, value);
     }
 
-    if (currentPtr->getItem() == searchedValue) {
-        freq++;
-        getFrequencyOf340RecursiveHelper(currentPtr->getNext(), searchedValue);
-
-    }
+    tPtr = tPtr->getNext();
+    return count + getFrequencyOf340RecursiveHelper(tPtr, value);
 }
 
-
-
-
+// Frequency, Recursive no Helper Method
 template <typename ItemType>
-int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& searchedValue) const {
-    static int freqCount = 0;
+int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& value) const {
+    int count = 0;
+    static Node<ItemType>* tPtr = headPtr;
 
-    //cool beans.
-    static Node<ItemType>* traversalPointer = headPtr;
-
-
-    if (traversalPointer->getNext() == nullptr) {
-        int searched = freqCount;
-        freqCount = 0;
-        return searched;
+    if (tPtr == nullptr) {
+        tPtr = headPtr;
+        return 0;
     }
 
-    if (traversalPointer->getItem() == searchedValue) {
-        freqCount++;
-        getFrequencyOf340Recursive(searchedValue);
+    if (tPtr->getItem() == value) {
+        tPtr = tPtr->getNext();
+        count++;
+        return count + getFrequencyOf340RecursiveNoHelper(value);
     }
 
+    tPtr = tPtr->getNext();
+    return count + getFrequencyOf340RecursiveNoHelper(value);
 }
-
-
-
-template <typename ItemType>
-ItemType LinkedBag<ItemType>::removeRandom340() {
-    //Little confusin... but we got it. MINECRAFT.
-    srand((unsigned)time(NULL));
-    int nodeToBeDeleted = rand() % getCurrentSize();
-
-
-    Node<ItemType>* currPtr = headPtr;
-
-    for (int i = 1; i <= nodeToBeDeleted; i++) {
-        currPtr = currPtr->getNext();
-    }
-    remove(currPtr->getItem());
-    return currPtr->getItem();
-}
-
-
-//DEFINED METHODS
-/*
-public:
-LinkedBag();
-LinkedBag(const LinkedBag<ItemType>&);
-virtual ~LinkedBag();
-int getCurrentSize() const;
-bool isEmpty() const;
-bool add(const ItemType&);
-bool remove(const ItemType&);
-void clear();
-bool contains(const ItemType&) const;
-int getFrequencyOf(const ItemType&) const;
-std::vector<ItemType> toVector() const;
-*/
-
-
-//TO IMPLEMENT
-/*
- bool removeSecondNode340();
- bool addEnd340(const ItemType&);
- int getCurrentSize340Iterative() const;
- int getCurrentSize340Recursive() const;
- int getCurrentSize340RecursiveNoHelper() const;
- int getFrequencyOf340Recursive(const ItemType&) const;
- int getFrequencyOf340RecursiveNoHelper(const ItemType&) const;
- ItemType removeRandom340();
- */
