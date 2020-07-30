@@ -6,7 +6,8 @@
 #include <cstddef>
 #include "Node.h"
 #include "LinkedBag.h"
-
+#include <iostream>
+using namespace std;
 //
 //
 // PLEASE DO NOT CHANGE THIS FILE
@@ -46,6 +47,7 @@ LinkedBag<ItemType>::LinkedBag(const LinkedBag<ItemType>& aBag) {
 
 template<typename ItemType>
 LinkedBag<ItemType>::~LinkedBag() {
+    cout << "Linked Bag Destructor Called" << endl;
 	clear();
 } 
 
