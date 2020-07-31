@@ -37,7 +37,7 @@ template <typename ItemType>
 ItemType LinkedBag<ItemType>::removeRandom340() {
     // Method for finding deletedNode
     int deletedNode;
-    srand((unsigned)time(NULL));
+    srand(time(nullptr));
     deletedNode = rand() % getCurrentSize();
 
     Node<ItemType>* cPtr = headPtr;

@@ -40,3 +40,11 @@ template<typename ItemType>
 Node<ItemType>* Node<ItemType>::getNext() const {
 	return next;
 }
+
+// Smart Pointer Change 4b: Destructor Implementation
+// See LinkedBag.cpp for 1st, 2nd and 3rd change
+// See Node.h for pre-defined destructor
+template<typename ItemType>
+Node<ItemType>::~Node() {
+	// Empty Content
+}

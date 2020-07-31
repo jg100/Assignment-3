@@ -22,6 +22,11 @@ public:
 	ItemType getItem() const;
 	Node<ItemType>* getNext() const;
 
+	// Smart Pointer Change 4b: Pre-Defined Destructor Declared
+	// See LinkedBag.cpp for 1st, 2nd and 3rd change
+	// See Node.cpp for actual destructor
+	~Node();
+
 private:
 	ItemType        item{};			 // A data item
 	Node<ItemType>* next{ nullptr }; // Pointer to next node

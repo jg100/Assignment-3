@@ -2,10 +2,12 @@
 //  Created by Frank M. Carrano and Timothy M. Henry.
 //	Updated by Duc Ta
 //  Copyright (c) 2017 Pearson Education, Hoboken, New Jersey.
-
+#include <iostream>
 #include <cstddef>
 #include "Node.h"
 #include "LinkedBag.h"
+
+using namespace std;
 
 //
 //
@@ -34,7 +36,9 @@ LinkedBag<ItemType>::LinkedBag(const LinkedBag<ItemType>& aBag) {
 		while (origChainPtr != nullptr)
 		{
 			ItemType nextItem = origChainPtr->getItem();
-			Node<ItemType>* newNodePtr = new Node<ItemType>(nextItem);
+
+			// Smart Pointer Change 1: Unique Pointer
+			unique_ptr<Node<ItemType>> newNodePtr(new Node<ItemType>(nextItem));
 			newChainPtr->setNext(newNodePtr);
 			newChainPtr = newChainPtr->getNext();
 			origChainPtr = origChainPtr->getNext();
@@ -91,13 +95,16 @@ bool LinkedBag<ItemType>::remove(const ItemType& anEntry) {
 
 	if (canRemoveItem) {
 		entryNodePtr->setItem(headPtr->getItem());
-		Node<ItemType>* nodeToDeletePtr = headPtr;
+
+		// Smart Pointer Change 2: Unique Pointer
+		unique_ptr<Node<ItemType>> nodeToDeletePtr(headPtr);
 		headPtr = headPtr->getNext();
 
 		nodeToDeletePtr->setNext(nullptr);
-		delete nodeToDeletePtr;
-		nodeToDeletePtr = nullptr;
 
+		// No Longer Needed, since Unique Pointer replaced
+		// delete nodeToDeletePtr;
+		// nodeToDeletePtr = nullptr;
 		itemCount--;
 	}
 
@@ -106,13 +113,18 @@ bool LinkedBag<ItemType>::remove(const ItemType& anEntry) {
 
 template<typename ItemType>
 void LinkedBag<ItemType>::clear() {
-	Node<ItemType>* nodeToDeletePtr = headPtr;
+
+	// Smart Pointer Change 3: Unique Pointer
+	// Identical with remove() method change
+	unique_ptr<Node<ItemType>> nodeToDeletePtr(headPtr);
 
 	while (headPtr != nullptr) {
 		headPtr = headPtr->getNext();
 		nodeToDeletePtr->setNext(nullptr);
-		delete nodeToDeletePtr;
-		nodeToDeletePtr = headPtr;
+
+		// No Longer Needed, since Unique Pointer replaced
+		// delete nodeToDeletePtr;
+		// nodeToDeletePtr = headPtr;
 	}
 
 	itemCount = 0;
