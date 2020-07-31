@@ -47,7 +47,7 @@ LinkedBag<ItemType>::LinkedBag(const LinkedBag<ItemType>& aBag) {
 
 template<typename ItemType>
 LinkedBag<ItemType>::~LinkedBag() {
-    cout << "Linked Bag Destructor Called" << endl;
+    cout << "---Linked Bag Destructor Called----" << endl;
 	clear();
 } 
 
@@ -64,6 +64,9 @@ int LinkedBag<ItemType>::getCurrentSize() const {
 template<typename ItemType>
 bool LinkedBag<ItemType>::add(const ItemType& newEntry) {
 	Node<ItemType>* nextNodePtr = new Node<ItemType>();
+	//Does ownership matter here?
+	//unique_ptr<Node<ItemType>> nextNodePtr {make_unique<Node<ItemType>>()};
+
 	nextNodePtr->setItem(newEntry);
 	nextNodePtr->setNext(headPtr);  
 	headPtr = nextNodePtr;
@@ -88,17 +91,23 @@ std::vector<ItemType> LinkedBag<ItemType>::toVector() const {
 
 template<typename ItemType>
 bool LinkedBag<ItemType>::remove(const ItemType& anEntry) {
+
 	Node<ItemType>* entryNodePtr = getPointerTo(anEntry);
+
 	bool canRemoveItem = !isEmpty() && (entryNodePtr != nullptr);
 
 	if (canRemoveItem) {
 		entryNodePtr->setItem(headPtr->getItem());
-		Node<ItemType>* nodeToDeletePtr = headPtr;
+		//******************************** CHANGE 1 ********************************
+		//Node<ItemType>* nodeToDeletePtr = headPtr;
+		//POINTER CHANGE 1: Changing the node to delete ptr to a smart pointer to remove clean up and the end of function scope.
+		std::unique_ptr<Node<ItemType>> nodeToDeletePtr (headPtr);
+
 		headPtr = headPtr->getNext();
 
 		nodeToDeletePtr->setNext(nullptr);
-		delete nodeToDeletePtr;
-		nodeToDeletePtr = nullptr;
+		//delete nodeToDeletePtr;
+		//nodeToDeletePtr = nullptr;
 
 		itemCount--;
 	}
@@ -106,19 +115,28 @@ bool LinkedBag<ItemType>::remove(const ItemType& anEntry) {
 	return canRemoveItem;
 }
 
+
+
+
 template<typename ItemType>
 void LinkedBag<ItemType>::clear() {
-	Node<ItemType>* nodeToDeletePtr = headPtr;
+	//Node<ItemType>* nodeToDeletePtr = headPtr;
+    //***************************************** CHANGE 2 *********************************
+    //Created a smart ptr that will delete data once out of scope for every portion Node of the LinkedBag
 
+    std::unique_ptr<Node<ItemType>> nodeToDeletePtr(headPtr);
 	while (headPtr != nullptr) {
 		headPtr = headPtr->getNext();
 		nodeToDeletePtr->setNext(nullptr);
-		delete nodeToDeletePtr;
-		nodeToDeletePtr = headPtr;
+		//delete nodeToDeletePtr;
+		//nodeToDeletePtr = headPtr;
 	}
 
 	itemCount = 0;
 } 
+
+
+
 
 template<typename ItemType>
 int LinkedBag<ItemType>::getFrequencyOf(const ItemType& anEntry) const {

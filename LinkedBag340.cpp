@@ -1,11 +1,3 @@
-//	LinkedBag340.cpp
-//	Created by: CSC340
-
-/*
-===>					<===
-===>  PLEASE ADD CODE	<===
-===>			ok		<===
-*/
 #include "LinkedBag.h"
 
 #include <cstdlib>
@@ -87,9 +79,9 @@ int LinkedBag<ItemType>::getCurrentSize340Recursive() const {
  */
 
 
- //Isnt this a private function? How is this file able to acess method?
- //Is it because this file is meant to define the class methods in the .h file.
- //Helper file
+//Isnt this a private function? How is this file able to acess method?
+//Is it because this file is meant to define the class methods in the .h file.
+//Helper file
 template<typename ItemType>
 int LinkedBag<ItemType>::getCurrentSize340RecursiveHelper(Node<ItemType>* testNode) const {
     int countHelper = 0;
@@ -205,7 +197,6 @@ int LinkedBag<ItemType>::getFrequencyOf340RecursiveNoHelper(const ItemType& sear
 
 template <typename ItemType>
 ItemType LinkedBag<ItemType>::removeRandom340() {
-    //Little confusin... but we got it. MINECRAFT.
     srand((unsigned)time(NULL));
     int nodeToBeDeleted = rand() % getCurrentSize();
 
@@ -219,33 +210,3 @@ ItemType LinkedBag<ItemType>::removeRandom340() {
     remove(currPtr->getItem());
     return returnedValue;
 }
-
-
-//DEFINED METHODS
-/*
-public:
-LinkedBag();
-LinkedBag(const LinkedBag<ItemType>&);
-virtual ~LinkedBag();
-int getCurrentSize() const;
-bool isEmpty() const;
-bool add(const ItemType&);
-bool remove(const ItemType&);
-void clear();
-bool contains(const ItemType&) const;
-int getFrequencyOf(const ItemType&) const;
-std::vector<ItemType> toVector() const;
-*/
-
-
-//TO IMPLEMENT
-/*
- bool removeSecondNode340();
- bool addEnd340(const ItemType&);
- int getCurrentSize340Iterative() const;
- int getCurrentSize340Recursive() const;
- int getCurrentSize340RecursiveNoHelper() const;
- int getFrequencyOf340Recursive(const ItemType&) const;
- int getFrequencyOf340RecursiveNoHelper(const ItemType&) const;
- ItemType removeRandom340();
- */

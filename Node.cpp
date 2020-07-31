@@ -4,12 +4,18 @@
 //  Copyright (c) 2017 Pearson Education, Hoboken, New Jersey.
 
 #include "Node.h"
-
+#include <iostream>
+using namespace std;
 //
 //
 // PLEASE DO NOT CHANGE THIS FILE
 //
 //
+template<typename ItemType>
+Node<ItemType>::~Node() {
+    cout << "Node Destructor Called" << endl;
+
+}
 
 template<typename ItemType>
 Node<ItemType>::Node() : item(), next(nullptr) {}

@@ -14,6 +14,8 @@
 template<typename ItemType>
 class Node {
 public:
+    //Node destructor
+    ~Node();
 	Node();
 	Node(const ItemType&);
 	Node(const ItemType&, Node<ItemType>*);
